@@ -2,9 +2,9 @@ body {
     overflow: hidden;
     background: linear-gradient(310deg,rgb(255, 0, 128), #ab093f, #e92e5d, #e2147b, #ff397b);
     background-size: 400% 400%;
-    -webkit-animation: gradient 10s ease infinite;
-    -moz-animation: gradient 10s ease infinite;
-    animation: gradient 10s ease infinite;
+    -webkit-animation: gradient 20s ease infinite;
+    -moz-animation: gradient 20s ease infinite;
+    animation: gradient 20s ease infinite;
     font-family: 'Space Mono', monospace;
     -moz-user-select: none;
     -webkit-user-select: none;
