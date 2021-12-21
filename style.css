@@ -1,0 +1,96 @@
+body {
+    overflow: hidden;
+    background: linear-gradient(310deg,rgb(255, 0, 128), #e92e5d, #e2147b, #ff397b);
+    background-size: 400% 400%;
+    -webkit-animation: gradient 10s ease infinite;
+    -moz-animation: gradient 10s ease infinite;
+    animation: gradient 10s ease infinite;
+    font-family: 'Space Mono', monospace;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@-webkit-keyframes gradient {
+    0%{background-position:0% 24%}
+    50%{background-position:100% 77%}
+    100%{background-position:0% 24%}
+}
+@-moz-keyframes gradient {
+    0%{background-position:0% 24%}
+    50%{background-position:100% 77%}
+    100%{background-position:0% 24%}
+}
+@keyframes gradient {
+    0%{background-position:0% 24%}
+    50%{background-position:100% 77%}
+    100%{background-position:0% 24%}
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.text {
+    font-size: 40px;
+    padding: 20px;
+    font-weight: bold;
+    color: rgba(255, 56, 82, 0.959);
+    background-color:rgba(26, 12, 13, 0.87);
+    position: absolute;
+    width: 380px;
+    height: 525px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 14px 15px rgba(0, 0, 0, 0.322);
+    align-items: center;
+    text-align: center;
+    display: block;
+    transition: padding 0.25s ease-out 0.1s, font-size 0.25s ease-out 0.1s;
+}
+
+.text div {
+    position: relative;
+    margin: 15px 40px;
+}
+
+.bio {
+    transition: all 0.25s ease-out 0.1s;
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+
+.pfp {
+    display: block;
+    width: 150px;
+    margin: 10px auto;
+    border-radius: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.social {
+    list-style: none;
+    padding: 0;
+}
+
+.social li {
+    display: inline-flex; 
+    background-color: #ffffff15;
+    transition: all 0.1s ease-out 0.1s;
+}
+
+.social li :hover {
+    background-color: rgba(255, 140, 155, 0.192);
+    transition: all 0.1s ease-out 0.1s;
+}
+
+
+.social img {
+    padding: 10px;
+    width: 30px;
+    display: block;
+}
