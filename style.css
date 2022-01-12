@@ -6,11 +6,11 @@ html {
 
 body {
     overflow: hidden;
-    background: linear-gradient(310deg,rgb(221, 47, 47),rgb(206, 44, 44), rgb(171, 9, 50), rgb(221, 47, 85));
+    background: linear-gradient(310deg,rgb(173, 30, 49), rgb(224, 46, 46),rgb(223, 41, 87),rgb(219, 49, 49));
     background-size: 400% 400%;
-    -webkit-animation: gradient 15s ease infinite;
-    -moz-animation: gradient 15s ease infinite;
-    animation: gradient 15s ease infinite;
+    -webkit-animation: gradient 10s ease infinite;
+    -moz-animation: gradient 10s ease infinite;
+    animation: gradient 10s ease infinite;
     font-family: 'Space Mono', monospace;
     -moz-user-select: none;
     -webkit-user-select: none;
