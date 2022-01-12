@@ -11,7 +11,7 @@ body {
     -webkit-animation: gradient 10s ease infinite;
     -moz-animation: gradient 10s ease infinite;
     animation: gradient 10s ease infinite;
-    font-family: 'Space Mono', monospace;
+    font-family: 'Red Hat Mono', monospace;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
@@ -73,7 +73,7 @@ body {
 }
 
 .bio li {
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     list-style: none;
     text-align: center;
     width: 17em;
