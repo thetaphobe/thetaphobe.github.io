@@ -75,7 +75,7 @@
           "mode": "repulse"
         },
         "onclick": {
-          "enable": false,
+          "enable": true,
           "mode": "push"
         },
         "resize": true
@@ -89,17 +89,17 @@
         },
         "bubble": {
           "distance": 800,
-          "size": 80,
-          "duration": 2,
+          "size": 10,
+          "duration": 0.2,
           "opacity": 0.8,
-          "speed": 3
+          "speed": 50
         },
         "repulse": {
           "distance": 100,
-          "duration": 0.5
+          "duration": 1
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 2
         },
         "remove": {
           "particles_nb": 2
