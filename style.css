@@ -100,28 +100,50 @@ body {
     margin: 5px auto;
     border-radius: 100%;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    transition: all 0.1s ease-out 0.1s;
+    transition: all 0.3s ease-out;
     border: 6px solid transparent;
 }
 
 .pfp:hover {
-    transition: all 0.1s ease-out 0.1s;
-    animation: glowing 7s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    transition: all 0.3s ease-out;
+    -webkit-animation: glowing2 5s ease-in-out infinite;
+    -moz-animation: glowing2 5s ease-in-out infinite;
+    animation: glowing2 5s ease-in-out infinite;
+    box-shadow: 0 0px 100px rgba(255, 14, 46);
+    border: 6px solid rgba(255, 14, 46);
+}
+
+@keyframes glowing2 {
+    0% {
+        box-shadow: 0 0px 125px 17px rgb(255, 52, 69);
+    }
+    50% {
+        box-shadow: 0 0px 20px 0px rgba(255, 14, 46);
+    }
+    100% {
+        box-shadow: 0 0px 125px 17px rgb(255, 52, 69);
+    }
 }
 
 @keyframes glowing {
-    0%{box-shadow: 0 0px 100px rgb(255, 52, 69);
-        border: 6px solid rgba(255, 14, 46);}
+    0% {
+        box-shadow: 0 0px 100px rgb(255, 52, 69);
+        border: 6px solid rgba(255, 14, 46);
+    }
     25% {
         border: 6px solid rgb(226, 43, 67);
-        }
-    50%{box-shadow: 0 0px 20px rgba(255, 14, 46);
-        border: 6px solid rgba(255, 14, 46);}
+    }
+    50% {
+        box-shadow: 0 0px 20px rgba(255, 14, 46);
+        border: 6px solid rgba(255, 14, 46);
+    }
     75% {
         border: 6px solid rgb(226, 43, 67);
     }
-    100%{box-shadow: 0 0px 100px rgb(255, 52, 69);
-        border: 6px solid rgba(255, 14, 46);}
+    100% {
+        box-shadow: 0 0px 100px rgb(255, 52, 69);
+        border: 6px solid rgba(255, 14, 46);
+    }
 }
 
 .overlay {
