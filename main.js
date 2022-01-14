@@ -11,7 +11,7 @@ import { MMDLoader } from "./vendor/examples/jsm/loaders/MMDLoader.js"
 let ready = false;
 var clock = new THREE.Clock();
 
-let camera, scene, renderer, composer, helper, stats, mesh;
+let camera, scene, renderer, composer, helper;
 
 const startButton = document.getElementById('startButton');
 const overlay = document.getElementById('overlay');
@@ -25,10 +25,15 @@ startButton.addEventListener('click', function () {
     startButton.remove();
     document.getElementById("credits").remove();
 
-    Ammo().then(function() {
+    if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
         init();
         animate();
-    });
+    } else {
+        Ammo().then(function() {
+            init();
+            animate();
+        });
+    }
 });
 
 function init() {
@@ -40,51 +45,74 @@ function init() {
     camera.position.y = 10;
     camera.position.z = 35;
     camera.rotateY(Math.PI / 10);
-    scene.add(camera);
-
+    
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-
+    
     scene.add(new THREE.PolarGridHelper(40, 10));
-
+    
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     composer.addPass(new ShaderPass(ColorCorrectionShader));
     composer.addPass(new ShaderPass(VignetteShader));
     
-    const listener = new THREE.AudioListener();
-    camera.add(listener);
-
+    
     const light = new THREE.PointLight(0xffffff, 1, 0);
     light.position.set(0, 100, 0);
     scene.add(light);
+    
+    const listener = new THREE.AudioListener();
+    camera.add(listener);
+    scene.add(camera);
 
     helper = new MMDAnimationHelper({pmxAnimation: true});
-    const loader = new MMDLoader();
 
-    loader.loadWithAnimation(
+    if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
+        new MMDLoader().loadWithAnimation(
+            'models/BetterReaper.pmx',
+            'models/the_boys.vmd',
+            function ( mmd ) {
+                helper.add( mmd.mesh, {
+                    animation: mmd.animation,
+                    physics: false,
+                } );
+                new THREE.AudioLoader().load(
+                    './audios/the_boys.mp3',
+                    function ( buffer ) {
+                        const audio = new THREE.Audio( listener ).setBuffer( buffer );
+                        helper.add( audio );
+                        scene.add( listener );
+                        scene.add( mmd.mesh );
+                        ready = true;
+                        document.getElementById("loading").remove();
+                    }
+                );
+            }
+        );
+    } else {
+        new MMDLoader().loadWithAnimation(
         'models/BetterReaper.pmx',
         'models/the_boys.vmd',
-        function (mmd) {
-            mesh = mmd.mesh
-            helper.add(mesh, {
+        function ( mmd ) {
+            helper.add( mmd.mesh, {
                 animation: mmd.animation,
                 physics: true,
-            });
+            } );
             new THREE.AudioLoader().load(
                 './audios/the_boys.mp3',
-                function (buffer) {
-                    const audio = new THREE.Audio(listener).setBuffer(buffer);
-                    helper.add(audio);
-                    scene.add(listener);
-                    scene.add(mmd.mesh);
+                function ( buffer ) {
+                    const audio = new THREE.Audio( listener ).setBuffer( buffer );
+                    helper.add( audio );
+                    scene.add( listener );
+                    scene.add( mmd.mesh );
                     ready = true;
                     document.getElementById("loading").remove();
                 }
-           );
+            );
         }
-   );
+    );
+    }
 
     //stats = new Stats();
     //document.body.appendChild(stats.dom);
