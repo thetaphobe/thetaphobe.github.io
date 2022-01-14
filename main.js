@@ -77,6 +77,7 @@ function init() {
                 function (buffer) {
                     const audio = new THREE.Audio(listener).setBuffer(buffer);
                     helper.add(audio);
+                    scene.add(listener);
                     scene.add(mmd.mesh);
                     ready = true;
                     document.getElementById("loading").remove();
