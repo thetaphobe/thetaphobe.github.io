@@ -102,7 +102,6 @@ function animate() {
     requestAnimationFrame(animate);
     if (ready) {
         helper.update(clock.getDelta());
-        console.log(mesh.position);
     }
     composer.render();
 };
