@@ -9,9 +9,18 @@ import { MMDAnimationHelper } from "./vendor/examples/jsm/animation/MMDAnimation
 import { MMDLoader } from "./vendor/examples/jsm/loaders/MMDLoader.js"
 
 let ready = false;
+
+// ios not supported
+let enablePhysics = true;
+
 var clock = new THREE.Clock();
 
 let camera, scene, renderer, composer, helper;
+
+let modelFile = "./models/LolitaReaper.pmx";
+let audioFile = "./mmd/Circus.wav";
+let motionFile = "./mmd/Circus-Motion.vmd";
+let cameraFile = "./mmd/Circus-Camera.vmd"; 
 
 const startButton = document.getElementById('startButton');
 const overlay = document.getElementById('overlay');
@@ -25,7 +34,7 @@ startButton.addEventListener('click', function () {
     startButton.remove();
     document.getElementById("credits").remove();
 
-    if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
+    if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
         init();
         animate();
     } else {
@@ -34,13 +43,14 @@ startButton.addEventListener('click', function () {
             animate();
         });
     }
+    
 });
 
 function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color("#ffffff");
 
-    camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.x = 11.5;
     camera.position.y = 10;
     camera.position.z = 35;
@@ -50,15 +60,14 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
     
-    scene.add(new THREE.PolarGridHelper(40, 10));
+    scene.add(new THREE.GridHelper(90, 20));
     
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     composer.addPass(new ShaderPass(ColorCorrectionShader));
     composer.addPass(new ShaderPass(VignetteShader));
     
-    
-    const light = new THREE.PointLight(0xffffff, 1, 0);
+    const light = new THREE.PointLight(0xffffff, 0.95, 0);
     light.position.set(0, 100, 0);
     scene.add(light);
     
@@ -66,71 +75,78 @@ function init() {
     camera.add(listener);
     scene.add(camera);
 
-    helper = new MMDAnimationHelper({pmxAnimation: true});
+    helper = new MMDAnimationHelper({resetPhysicsOnLoop: true});
+    const loader = new MMDLoader();
 
-    if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
-        new MMDLoader().loadWithAnimation(
-            'models/BetterReaper.pmx',
-            'models/the_boys.vmd',
-            function ( mmd ) {
-                helper.add( mmd.mesh, {
-                    animation: mmd.animation,
-                    physics: false,
-                } );
-                new THREE.AudioLoader().load(
-                    './audios/the_boys.mp3',
-                    function ( buffer ) {
-                        const audio = new THREE.Audio( listener ).setBuffer( buffer );
-                        helper.add( audio );
-                        scene.add( listener );
-                        scene.add( mmd.mesh );
-                        ready = true;
-                        document.getElementById("loading").remove();
-                    }
-                );
-            }
-        );
-    } else {
-        new MMDLoader().loadWithAnimation(
-        'models/BetterReaper.pmx',
-        'models/the_boys.vmd',
-        function ( mmd ) {
-            helper.add( mmd.mesh, {
+    loader.loadWithAnimation(modelFile, motionFile, function (mmd) {
+        if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
+
+            helper.add(mmd.mesh, {
                 animation: mmd.animation,
-                physics: true,
-            } );
-            new THREE.AudioLoader().load(
-                './audios/the_boys.mp3',
-                function ( buffer ) {
-                    const audio = new THREE.Audio( listener ).setBuffer( buffer );
-                    helper.add( audio );
-                    scene.add( listener );
-                    scene.add( mmd.mesh );
-                    ready = true;
-                    document.getElementById("loading").remove();
-                }
-            );
-        }
-    );
-    }
+                physics: false
+            });
 
-    //stats = new Stats();
-    //document.body.appendChild(stats.dom);
+            console.log("Added mesh (iOS device)");
+        } else {
+
+            helper.add(mmd.mesh, {
+                animation: mmd.animation,
+                physics: enablePhysics
+            });
+            
+            console.log("Added mesh (non-iOS device)");
+        }
+
+        if (cameraFile != "") {
+
+            loader.loadAnimation(cameraFile, camera, function (cameraAnimation) {
+                helper.add(camera, {
+                animation: cameraAnimation
+                });
+                new THREE.AudioLoader().load(audioFile, function (buffer) {
+                    const audio = new THREE.Audio(listener).setBuffer(buffer);
+                    helper.add(audio);
+                    scene.add(listener);
+                    scene.add(mmd.mesh);
+                    document.getElementById("loading").remove();
+                    ready = true;
+                });
+            });
+
+            console.log("Loaded camera file");
+        } else {
+
+            new THREE.AudioLoader().load(audioFile, function (buffer) {
+                const audio = new THREE.Audio(listener).setBuffer(buffer);
+                helper.add(audio);
+                scene.add(listener);
+                scene.add(mmd.mesh);
+                document.getElementById("loading").remove();
+                ready = true;
+            });
+
+            console.log("No camera file");
+        }
+    });
 
     window.addEventListener("resize", onWindowResize);
 }
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
+
     camera.updateProjectionMatrix();
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
     requestAnimationFrame(animate);
+
     if (ready) {
         helper.update(clock.getDelta());
     }
+
     composer.render();
 };
