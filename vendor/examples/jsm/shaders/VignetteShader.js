@@ -9,7 +9,7 @@ const VignetteShader = {
 	uniforms: {
 
 		'tDiffuse': { value: null },
-		'offset': { value: 0.15 },
+		'offset': { value: 0.2 },
 		'darkness': { value: 15 }
 
 	},

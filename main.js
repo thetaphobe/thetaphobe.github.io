@@ -13,6 +13,8 @@ let ready = false;
 // ios not supported
 let enablePhysics = true;
 
+let pixelRatioDivide = 1;
+
 var clock = new THREE.Clock();
 
 let camera, scene, renderer, composer, helper;
@@ -35,9 +37,11 @@ startButton.addEventListener('click', function () {
     document.getElementById("credits").remove();
 
     if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
+        pixelRatioDivide = 2;
         init();
         animate();
     } else {
+        pixelRatioDivide = 1;
         Ammo().then(function() {
             init();
             animate();
@@ -50,7 +54,7 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color("#ffffff");
 
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 10, 1000);
     camera.position.x = 11.5;
     camera.position.y = 10;
     camera.position.z = 35;
@@ -58,6 +62,7 @@ function init() {
     
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio / pixelRatioDivide);
     document.body.appendChild(renderer.domElement);
     
     scene.add(new THREE.GridHelper(90, 20));
@@ -80,25 +85,19 @@ function init() {
 
     loader.loadWithAnimation(modelFile, motionFile, function (mmd) {
         if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
-
             helper.add(mmd.mesh, {
                 animation: mmd.animation,
                 physics: false
             });
-
             console.log("Added mesh (iOS device)");
         } else {
-
             helper.add(mmd.mesh, {
                 animation: mmd.animation,
                 physics: enablePhysics
             });
-            
             console.log("Added mesh (non-iOS device)");
         }
-
         if (cameraFile != "") {
-
             loader.loadAnimation(cameraFile, camera, function (cameraAnimation) {
                 helper.add(camera, {
                 animation: cameraAnimation
@@ -112,10 +111,8 @@ function init() {
                     ready = true;
                 });
             });
-
             console.log("Loaded camera file");
         } else {
-
             new THREE.AudioLoader().load(audioFile, function (buffer) {
                 const audio = new THREE.Audio(listener).setBuffer(buffer);
                 helper.add(audio);
@@ -124,11 +121,9 @@ function init() {
                 document.getElementById("loading").remove();
                 ready = true;
             });
-
             console.log("No camera file");
         }
     });
-
     window.addEventListener("resize", onWindowResize);
 }
 
