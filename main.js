@@ -17,7 +17,7 @@ var clock = new THREE.Clock();
 
 let camera, scene, renderer, composer, helper;
 
-let modelFile = "./models/Reaper Lolita Pink.pmx";
+let modelFile = "./models/PinkReaper.pmx";
 let audioFile = "./mmd/Circus.wav";
 let motionFile = "./mmd/Circus-Motion.vmd";
 let cameraFile = "./mmd/Circus-Camera.vmd"; 
