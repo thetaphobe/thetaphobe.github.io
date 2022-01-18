@@ -12,9 +12,13 @@
 			}
 			#overlay {
 				position: absolute;
+				display: flex;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
 			}
 			#loading {
 				position: absolute;
@@ -50,11 +54,14 @@
 			}
 
 			button {
+				margin: 10px;
+				width: 300px;
+				height: 100px;
 				border-radius: 10px;
 				color: #3d3d3d;
 				background-color: #ffffff;
 				border: 2px solid #3d3d3d;
-				padding: 20px 100px;
+				padding: 15px 5px;
 				text-align: center;
 				text-decoration: none;
 				display: inline-block;
@@ -72,7 +79,8 @@
 	<body>
 		<div id="credits"># Credits to DesertDraggon on DeviantArt</div>
 		<div id="overlay">
-			<button id="startButton">Play</button>	
+			<button id="startButton">Play</button>
+			<button id="homeButton">Home</button>
 		</div>
 		<script src="./vendor/examples/js/libs/ammo.wasm.js"></script>
 		<script type="module" src="main.js">	

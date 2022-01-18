@@ -8,6 +8,7 @@ import { VignetteShader } from "./vendor/examples/jsm/shaders/VignetteShader.js"
 import { MMDAnimationHelper } from "./vendor/examples/jsm/animation/MMDAnimationHelper.js"
 import { MMDLoader } from "./vendor/examples/jsm/loaders/MMDLoader.js"
 
+
 let ready = false;
 
 // ios not supported
@@ -17,7 +18,7 @@ let pixelRatioDivide = 1;
 
 var clock = new THREE.Clock();
 
-let camera, scene, renderer, composer, helper;
+let camera, scene, renderer, composer, helper, audio;
 
 let modelFile = "./models/Reaper Lolita Pink.pmx";
 let audioFile = "./mmd/Circus.wav";
@@ -25,15 +26,20 @@ let motionFile = "./mmd/Circus-Motion.vmd";
 let cameraFile = "./mmd/Circus-Camera.vmd"; 
 
 const startButton = document.getElementById('startButton');
+const homeButton = document.getElementById('homeButton');
 const overlay = document.getElementById('overlay');
-startButton.addEventListener('click', function () {
 
+homeButton.addEventListener('click', function() {
+    window.location.href = "./index.html";
+})
+startButton.addEventListener('click', function() {
     var loading = document.createElement("div");
     loading.innerHTML = "Loading...";
     loading.id = "loading";
     overlay.appendChild(loading);
 
     startButton.remove();
+    homeButton.remove();
     document.getElementById("credits").remove();
 
     if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
@@ -103,7 +109,7 @@ function init() {
                 animation: cameraAnimation
                 });
                 new THREE.AudioLoader().load(audioFile, function (buffer) {
-                    const audio = new THREE.Audio(listener).setBuffer(buffer);
+                    audio = new THREE.Audio(listener).setBuffer(buffer);
                     helper.add(audio);
                     scene.add(listener);
                     scene.add(mmd.mesh);
@@ -114,7 +120,7 @@ function init() {
             console.log("Loaded camera file");
         } else {
             new THREE.AudioLoader().load(audioFile, function (buffer) {
-                const audio = new THREE.Audio(listener).setBuffer(buffer);
+                audio = new THREE.Audio(listener).setBuffer(buffer);
                 helper.add(audio);
                 scene.add(listener);
                 scene.add(mmd.mesh);
@@ -137,6 +143,7 @@ function onWindowResize() {
 }
 
 function animate() {
+    if (document.visibilityState != "hidden") {
     requestAnimationFrame(animate);
 
     if (ready) {
@@ -144,4 +151,5 @@ function animate() {
     }
 
     composer.render();
+    }
 };
