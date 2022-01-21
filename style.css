@@ -131,10 +131,9 @@ img.emoji {
 
 .pfp {
     display: block;
-    width: 150px;
+    width: 155px;
     margin: 5px auto;
     border-radius: 100%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-out;
     border: 6px solid transparent;
     z-index: 10;
