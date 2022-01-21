@@ -2,9 +2,11 @@ html {
     margin: 0;
     height: 100%;
     width: 100%;
+    background-color: black;
 }
 
 body {
+    margin: 0;
     overflow: hidden;
     background: linear-gradient(310deg,rgb(173, 30, 49), rgb(224, 46, 46),rgb(223, 41, 87),rgb(219, 49, 49));
     background-size: 400% 400%;
@@ -23,6 +25,16 @@ body {
     height: 100%;
 }
 
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+img.emoji {
+    width: 1em;
+    pointer-events: none;
+}
+
 @-webkit-keyframes gradient {
     0%{background-position:0% 24%}
     50%{background-position:100% 77%}
@@ -38,81 +50,6 @@ body {
     50%{background-position:100% 77%}
     100%{background-position:0% 24%}
 }
-
-.text {
-    font-size: 40px;
-    padding: 20px;
-    font-weight: bold;
-    color: rgba(255, 14, 46, 0.959);
-    background-color:rgba(26, 12, 13, 0.87);
-    position: absolute;
-    width: 380px;
-    height: 525px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 14px 15px rgba(0, 0, 0, 0.322);
-    align-items: center;
-    text-align: center;
-    display: block;
-    transition: padding 0.25s ease-out 0.1s, font-size 0.25s ease-out 0.1s;
-    border-bottom: 4px solid rgba(71, 71, 71, 0.425);
-}
-
-.text div {
-    position: relative;
-    margin: 10px 60px;
-}
-
-.bio {
-    transition: all 0.25s ease-out 0.1s;
-    color: white;
-    font-size: 18px;
-    font-weight: normal;
-    text-align: left;
-}
-
-.bio li {
-    margin-bottom: 10px;
-    list-style: none;
-    text-align: center;
-    width: 17em;
-}
-
-.bio li::before {
-    content: "+";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-    color: rgba(255, 14, 46, 0.959); /* Change the color */
-    font-size: 25px;
-    font-weight: bold; /* If you want it to be bold */
-    display: inline-block; /* Needed to add space between the bullet and the text */
-    width: 1em; /* Also needed for space (tweak if needed) */
-    margin-left: -1em; /* Also needed for space (tweak if needed) */
-    margin-right: 5px;
-    line-height: 25px;
-
-}
-
-
-.pfp {
-    position: relative;
-    display: block;
-    width: 150px;
-    margin: 5px auto;
-    border-radius: 100%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease-out;
-    border: 6px solid transparent;
-}
-
-.pfp:hover {
-    transition: all 0.3s ease-out;
-    -webkit-animation: glowing2 5s ease-in-out infinite;
-    -moz-animation: glowing2 5s ease-in-out infinite;
-    animation: glowing2 5s ease-in-out infinite;
-    box-shadow: 0 0px 100px rgba(255, 14, 46);
-    border: 6px solid rgba(255, 14, 46);
-}
-
 @keyframes glowing2 {
     0% {
         box-shadow: 0 0px 125px 17px rgb(255, 52, 69);
@@ -124,7 +61,6 @@ body {
         box-shadow: 0 0px 125px 17px rgb(255, 52, 69);
     }
 }
-
 @keyframes glowing {
     0% {
         box-shadow: 0 0px 100px rgb(255, 52, 69);
@@ -146,25 +82,100 @@ body {
     }
 }
 
-.overlay {
-    visibility: hidden;
-    margin: 0 auto;
-    pointer-events: none;
-    width: 200px;
+.text {
+    font-size: 40px;
+    font-weight: bold;
+    color: rgba(255, 14, 46, 0.959);
+    background-color:rgba(26, 12, 13, 0.87);
     position: absolute;
-    top: 25%;
+    width: 400px;
+    height: 600px;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -35%);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 14px 15px rgba(0, 0, 0, 0.322);
+    transition: padding 0.25s ease-out 0.1s, font-size 0.25s ease-out 0.1s;
+    border-bottom: 4px solid rgba(71, 71, 71, 0.425);
+    display: flex;
+    flex-direction: column;
+}
+
+.bio {
+    transition: all 0.25s ease-out 0.1s;
+    color: white;
+    font-size: 18px;
+    font-weight: normal;
+    flex-grow: 1;
+    margin: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bio li {
+    list-style: none;
+}
+
+.bio li::before {
+    content: "+";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: rgba(255, 14, 46, 0.959); /* Change the color */
+    font-size: 25px;
+    font-weight: bold; /* If you want it to be bold */
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 1em; /* Also needed for space (tweak if needed) */
+    margin-left: -1em; /* Also needed for space (tweak if needed) */
+    margin-right: 5px;
+    line-height: 25px;
+}
+
+.pfp {
+    display: block;
+    width: 150px;
+    margin: 5px auto;
+    border-radius: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-out;
+    border: 6px solid transparent;
+    z-index: 10;
+}
+
+.name {
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.flags {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.pfp:hover {
+    transition: all 0.3s ease-out;
+    -webkit-animation: glowing2 5s ease-in-out infinite;
+    -moz-animation: glowing2 5s ease-in-out infinite;
+    animation: glowing2 5s ease-in-out infinite;
+    box-shadow: 0 0px 100px rgba(255, 14, 46);
+    border: 6px solid rgba(255, 14, 46);
 }
 
 .social {
-    list-style: none;
     padding: 0;
-    margin: 10px;
+    margin: 0;
+    flex-grow: 1.5;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
 }
 
 .social li {
-    display: inline-flex; 
+    width: 50px;
+    height: 50px;
     background-color: #ffffff15;
     transition: all 0.1s ease-out 0.1s;
     border-bottom: 2px solid rgba(255, 255, 255, 0.116);
